@@ -1,0 +1,56 @@
+name: Build Home Auto Sort PT-BR
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - "src/**"
+      - "dist/**"
+      - "scripts/**"
+      - "xmake.lua"
+      - ".github/workflows/build.yml"
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup XMake
+        uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: "3.1.1"
+          package-cache: true
+          build-cache: true
+
+      - name: Fetch build dependencies
+        shell: pwsh
+        run: ./scripts/fetch-deps.ps1
+
+      - name: Configure
+        shell: pwsh
+        run: xmake f -p windows -a x64 -m releasedbg -y
+
+      - name: Build DLL
+        shell: pwsh
+        run: xmake -y
+
+      - name: Create MO2-ready package
+        shell: pwsh
+        run: ./scripts/package.ps1
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: HomeAutoSort-PTBR-2.4
+          path: |
+            HomeAutoSort_PTBR_2.4_GitHubBuild.zip
+            artifact/SKSE/Plugins/HomeAutoSort.dll
+            artifact/SKSE/Plugins/HomeAutoSort_Translation.ini
+          if-no-files-found: error
+          retention-days: 30
