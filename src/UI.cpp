@@ -83,16 +83,16 @@ namespace
 
     void RenderContainerCombo(const char* label, std::string& currentEditorID,
                               const CellHomeData& cellData, bool enabled,
-                              const ImVec4& color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f))
+                              const ImGuiMCP::ImVec4& color = ImGuiMCP::ImVec4(1.0f, 1.0f, 1.0f, 1.0f))
     {
-        ImGui::PushID(label);
+        ImGuiMCP::PushID(label);
 
         auto& filterStr = s_comboFilterCache[label];
         char filterBuf[256];
         strncpy_s(filterBuf, filterStr.c_str(), sizeof(filterBuf) - 1);
         filterBuf[sizeof(filterBuf) - 1] = '\0';
-        ImGui::InputTextWithHint("##cf", TR("$UI", "filterContainers", "Filter containers..."), filterBuf, sizeof(filterBuf));
-        ImGui::SameLine();
+        ImGuiMCP::InputTextWithHint("##cf", TR("$UI", "filterContainers", "Filter containers..."), filterBuf, sizeof(filterBuf));
+        ImGuiMCP::SameLine();
         UI::HelpMarker(TR("$UI", "filterContainersHelp",
             "Type to filter. Case-insensitive partial match on container name, base form ID, or reference ID.\n\nTo find a container's IDs: open the console (~), click the container to see its reference (e.g. 000ABC12), then type that number into the filter."));
         filterStr = filterBuf;
@@ -113,21 +113,21 @@ namespace
             }
         }
 
-        ImGui::PushStyleColor(ImGuiCol_PopupBg, ImVec4(0.1f, 0.1f, 0.1f, 1.0f));
-        ImGui::PushStyleColor(ImGuiCol_Text, color);
+        ImGuiMCP::PushStyleColor(ImGuiMCP::ImGuiCol_PopupBg, ImGuiMCP::ImVec4(0.1f, 0.1f, 0.1f, 1.0f));
+        ImGuiMCP::PushStyleColor(ImGuiMCP::ImGuiCol_Text, color);
 
-        ImGui::BeginDisabled(!enabled);
+        ImGuiMCP::BeginDisabled(!enabled);
 
-        if (ImGui::BeginCombo("##co", preview.c_str()))
+        if (ImGuiMCP::BeginCombo("##co", preview.c_str()))
         {
             bool filterActive = !filterStr.empty();
 
-            if (ImGui::Selectable(TR("$UI", "none", "[None]"), selectedIdx == 0))
+            if (ImGuiMCP::Selectable(TR("$UI", "none", "[None]"), selectedIdx == 0))
             {
                 currentEditorID.clear();
                 Settings::GetSingleton().Save();
             }
-            if (selectedIdx == 0) ImGui::SetItemDefaultFocus();
+            if (selectedIdx == 0) ImGuiMCP::SetItemDefaultFocus();
 
             for (size_t i = 0; i < cellData.containers.size(); ++i)
             {
@@ -144,27 +144,27 @@ namespace
                     cellData.containers[i].name.c_str(),
                     cellData.containers[i].refFormID & 0xFFFFFF);
                 bool isSel = (static_cast<int>(i) + 1 == selectedIdx);
-                if (ImGui::Selectable(buf, isSel))
+                if (ImGuiMCP::Selectable(buf, isSel))
                 {
                     currentEditorID = ContainerKey(cellData.containers[i]);
                     Settings::GetSingleton().Save();
                 }
-                if (isSel) ImGui::SetItemDefaultFocus();
+                if (isSel) ImGuiMCP::SetItemDefaultFocus();
             }
-            ImGui::EndCombo();
+            ImGuiMCP::EndCombo();
         }
 
-        ImGui::EndDisabled();
+        ImGuiMCP::EndDisabled();
 
-        ImGui::PopStyleColor(2);
-        ImGui::PopID();
+        ImGuiMCP::PopStyleColor(2);
+        ImGuiMCP::PopID();
     }
 
-    void RenderSubLabel(const char* text, const ImVec4& color)
+    void RenderSubLabel(const char* text, const ImGuiMCP::ImVec4& color)
     {
-        ImGui::Bullet();
-        ImGui::SameLine();
-        ImGui::TextColored(color, "%s", text);
+        ImGuiMCP::Bullet();
+        ImGuiMCP::SameLine();
+        ImGuiMCP::TextColored(color, "%s", text);
     }
 
     void RenderCellContent(int cellIndex, const char* tabName)
@@ -177,23 +177,23 @@ namespace
         bool enabled = homeSet && inCell;
         bool l5 = s.lorerim5Compat.load();
 
-        const ImVec4 COL_WHITE = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
-        const ImVec4 COL_WEAPONS = ImVec4(1.0f, 0.4f, 0.4f, 1.0f);
-        const ImVec4 COL_ARMOR = ImVec4(0.4f, 0.6f, 1.0f, 1.0f);
-        const ImVec4 COL_JEWELRY = ImVec4(1.0f, 0.8f, 0.2f, 1.0f);
-        const ImVec4 COL_POTIONS = ImVec4(0.4f, 1.0f, 0.4f, 1.0f);
-        const ImVec4 COL_POISONS = ImVec4(0.8f, 0.3f, 0.9f, 1.0f);
-        const ImVec4 COL_SCROLLS = ImVec4(0.3f, 0.9f, 1.0f, 1.0f);
-        const ImVec4 COL_CONSUMABLES = ImVec4(1.0f, 0.7f, 0.3f, 1.0f);
-        const ImVec4 COL_INGREDIENTS = ImVec4(0.6f, 1.0f, 0.6f, 1.0f);
-        const ImVec4 COL_WRITTEN = ImVec4(0.9f, 0.8f, 0.6f, 1.0f);
-        const ImVec4 COL_KEYS = ImVec4(0.9f, 0.9f, 0.0f, 1.0f);
-        const ImVec4 COL_AMMO = ImVec4(0.6f, 0.8f, 1.0f, 1.0f);
-        const ImVec4 COL_MISC = ImVec4(0.5f, 0.9f, 0.9f, 1.0f);
+        const ImGuiMCP::ImVec4 COL_WHITE = ImGuiMCP::ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+        const ImGuiMCP::ImVec4 COL_WEAPONS = ImGuiMCP::ImVec4(1.0f, 0.4f, 0.4f, 1.0f);
+        const ImGuiMCP::ImVec4 COL_ARMOR = ImGuiMCP::ImVec4(0.4f, 0.6f, 1.0f, 1.0f);
+        const ImGuiMCP::ImVec4 COL_JEWELRY = ImGuiMCP::ImVec4(1.0f, 0.8f, 0.2f, 1.0f);
+        const ImGuiMCP::ImVec4 COL_POTIONS = ImGuiMCP::ImVec4(0.4f, 1.0f, 0.4f, 1.0f);
+        const ImGuiMCP::ImVec4 COL_POISONS = ImGuiMCP::ImVec4(0.8f, 0.3f, 0.9f, 1.0f);
+        const ImGuiMCP::ImVec4 COL_SCROLLS = ImGuiMCP::ImVec4(0.3f, 0.9f, 1.0f, 1.0f);
+        const ImGuiMCP::ImVec4 COL_CONSUMABLES = ImGuiMCP::ImVec4(1.0f, 0.7f, 0.3f, 1.0f);
+        const ImGuiMCP::ImVec4 COL_INGREDIENTS = ImGuiMCP::ImVec4(0.6f, 1.0f, 0.6f, 1.0f);
+        const ImGuiMCP::ImVec4 COL_WRITTEN = ImGuiMCP::ImVec4(0.9f, 0.8f, 0.6f, 1.0f);
+        const ImGuiMCP::ImVec4 COL_KEYS = ImGuiMCP::ImVec4(0.9f, 0.9f, 0.0f, 1.0f);
+        const ImGuiMCP::ImVec4 COL_AMMO = ImGuiMCP::ImVec4(0.6f, 0.8f, 1.0f, 1.0f);
+        const ImGuiMCP::ImVec4 COL_MISC = ImGuiMCP::ImVec4(0.5f, 0.9f, 0.9f, 1.0f);
 
-        ImGui::TextColored(ImVec4(0.7f, 0.85f, 1.0f, 1.0f), "%s", tabName);
+        ImGuiMCP::TextColored(ImGuiMCP::ImVec4(0.7f, 0.85f, 1.0f, 1.0f), "%s", tabName);
 
-        if (ImGui::Button(TR("$UI", "selectHome", "Select this Cell as Home for Storage System")))
+        if (ImGuiMCP::Button(TR("$UI", "selectHome", "Select this Cell as Home for Storage System")))
         {
             SKSE::GetTaskInterface()->AddTask([cellIndex]() {
                 CellManager::ScanContainers(cellIndex);
@@ -203,55 +203,55 @@ namespace
 
         if (homeSet)
         {
-            ImGui::SameLine();
-            ImGui::TextColored(ImVec4(0.3f, 1.0f, 0.3f, 1.0f), TR("$UI", "setToHome", "Set to Home"));
-            ImGui::SameLine();
-            ImGui::TextColored(ImVec4(0.3f, 1.0f, 0.3f, 1.0f), "%s", cellData.cellName.c_str());
+            ImGuiMCP::SameLine();
+            ImGuiMCP::TextColored(ImGuiMCP::ImVec4(0.3f, 1.0f, 0.3f, 1.0f), TR("$UI", "setToHome", "Set to Home"));
+            ImGuiMCP::SameLine();
+            ImGuiMCP::TextColored(ImGuiMCP::ImVec4(0.3f, 1.0f, 0.3f, 1.0f), "%s", cellData.cellName.c_str());
             if (!cellData.cellEditorID.empty())
             {
-                ImGui::SameLine();
-                ImGui::TextColored(ImVec4(0.3f, 1.0f, 0.3f, 1.0f), " (%s)", cellData.cellEditorID.c_str());
+                ImGuiMCP::SameLine();
+                ImGuiMCP::TextColored(ImGuiMCP::ImVec4(0.3f, 1.0f, 0.3f, 1.0f), " (%s)", cellData.cellEditorID.c_str());
             }
         }
         else
         {
-            ImGui::SameLine();
-            ImGui::TextColored(ImVec4(1.0f, 0.3f, 0.3f, 1.0f), TR("$UI", "homeUnset", "Home Unset"));
+            ImGuiMCP::SameLine();
+            ImGuiMCP::TextColored(ImGuiMCP::ImVec4(1.0f, 0.3f, 0.3f, 1.0f), TR("$UI", "homeUnset", "Home Unset"));
         }
 
-        ImGui::Spacing();
-        ImGui::Separator();
+        ImGuiMCP::Spacing();
+        ImGuiMCP::Separator();
 
         static bool s_showImport = false;
-        ImGui::Spacing();
-        if (ImGui::Button(TR("$UI", "importPreset", "Import preset")))
+        ImGuiMCP::Spacing();
+        if (ImGuiMCP::Button(TR("$UI", "importPreset", "Import preset")))
         {
             s_showImport = !s_showImport;
         }
-        ImGui::SameLine();
-        ImGui::SetItemTooltip(TR("$UI", "importPresetHelp", "Load a preset that matches the current cell."));
+        ImGuiMCP::SameLine();
+        ImGuiMCP::SetItemTooltip(TR("$UI", "importPresetHelp", "Load a preset that matches the current cell."));
 
         if (homeSet)
         {
-            if (ImGui::Button(TR("$UI", "clear", "Clear")))
+            if (ImGuiMCP::Button(TR("$UI", "clear", "Clear")))
             {
                 cs = CellSettings{};
                 Settings::GetSingleton().Save();
                 CellManager::ClearCellData(cellIndex);
                 Settings::ClearActivePreset(cellIndex);
             }
-            ImGui::SetItemTooltip(TR("$UI", "clearHelp", "Clear all SKSE menu settings for this cell (including home setup)."));
+            ImGuiMCP::SetItemTooltip(TR("$UI", "clearHelp", "Clear all SKSE menu settings for this cell (including home setup)."));
 
-            ImGui::SameLine();
-            if (ImGui::Button(TR("$UI", "exportPreset", "Export as preset")))
+            ImGuiMCP::SameLine();
+            if (ImGuiMCP::Button(TR("$UI", "exportPreset", "Export as preset")))
             {
                 Settings::ExportPreset(cellIndex);
                 Settings::LoadPresetCache();
             }
-            ImGui::SetItemTooltip(TR("$UI", "exportPresetHelp", "Save this cell\'s container setup to a preset JSON file for reuse."));
+            ImGuiMCP::SetItemTooltip(TR("$UI", "exportPresetHelp", "Save this cell\'s container setup to a preset JSON file for reuse."));
         }
 
-        ImGui::Spacing();
+        ImGuiMCP::Spacing();
         if (s_showImport)
         {
                 auto* playerCell = CellManager::GetPlayerParentCell();
@@ -272,25 +272,25 @@ namespace
 
                 if (matches.empty())
                 {
-                    ImGui::TextDisabled(TR("$UI", "noMatchingPresets", "(no matching presets for this cell)"));
+                    ImGuiMCP::TextDisabled(TR("$UI", "noMatchingPresets", "(no matching presets for this cell)"));
                 }
                 else
                 {
                     static int selectedPreset = -1;
                     if (selectedPreset >= (int)matches.size()) selectedPreset = -1;
                     const char* preview = (selectedPreset >= 0) ? matches[selectedPreset].second.c_str() : TR("$UI", "none", "[None]");
-                    ImGui::SetNextItemWidth(ImGui::GetWindowWidth() * 0.5f);
-                    if (ImGui::BeginCombo("##presetDrop", preview))
+                    ImGuiMCP::SetNextItemWidth(ImGuiMCP::GetWindowWidth() * 0.5f);
+                    if (ImGuiMCP::BeginCombo("##presetDrop", preview))
                     {
-                        if (ImGui::Selectable(TR("$UI", "none", "[None]"), selectedPreset < 0))
+                        if (ImGuiMCP::Selectable(TR("$UI", "none", "[None]"), selectedPreset < 0))
                         {
                             selectedPreset = -1;
                         }
-                        if (selectedPreset < 0) ImGui::SetItemDefaultFocus();
+                        if (selectedPreset < 0) ImGuiMCP::SetItemDefaultFocus();
                         for (size_t i = 0; i < matches.size(); ++i)
                         {
                             bool sel = (static_cast<int>(i) == selectedPreset);
-                            if (ImGui::Selectable(matches[i].second.c_str(), sel))
+                            if (ImGuiMCP::Selectable(matches[i].second.c_str(), sel))
                             {
                                 selectedPreset = static_cast<int>(i);
                                 auto* presetPtr = Settings::FindPresetInCache(matches[i].first);
@@ -308,48 +308,48 @@ namespace
                                     });
                                 }
                             }
-                            if (sel) ImGui::SetItemDefaultFocus();
+                            if (sel) ImGuiMCP::SetItemDefaultFocus();
                         }
-                        ImGui::EndCombo();
+                        ImGuiMCP::EndCombo();
                     }
-                    ImGui::SameLine();
+                    ImGuiMCP::SameLine();
                     UI::HelpMarker(TR("$UI", "presetListHelp", "Only shows presets matching the cell you are currently in. Select one to apply it."));
                 }
             }
 
-        ImGui::Spacing();
-        ImGui::Separator();
+        ImGuiMCP::Spacing();
+        ImGuiMCP::Separator();
 
-        ImGui::TextWrapped(TR("$UI", "protectedItems", "Equipped, favorited, and quest items are never moved."));
+        ImGuiMCP::TextWrapped(TR("$UI", "protectedItems", "Equipped, favorited, and quest items are never moved."));
 
         if (homeSet)
         {
-            ImGui::TextColored(ImVec4(1.0f, 0.6f, 0.3f, 1.0f), TR("$UI", "needMasterChest", "Set a Master Chest below, then go to it and use the SkyPrompt to stash or resupply."));
+            ImGuiMCP::TextColored(ImGuiMCP::ImVec4(1.0f, 0.6f, 0.3f, 1.0f), TR("$UI", "needMasterChest", "Set a Master Chest below, then go to it and use the SkyPrompt to stash or resupply."));
         }
         else
         {
-            ImGui::TextColored(ImVec4(1.0f, 0.6f, 0.3f, 1.0f), TR("$UI", "selectHomeFirst", "Select this cell as your home first, then set a Master Chest."));
+            ImGuiMCP::TextColored(ImGuiMCP::ImVec4(1.0f, 0.6f, 0.3f, 1.0f), TR("$UI", "selectHomeFirst", "Select this cell as your home first, then set a Master Chest."));
         }
 
         if (!enabled && homeSet)
         {
-            ImGui::TextColored(ImVec4(1.0f, 0.6f, 0.3f, 1.0f), TR("$UI", "standInHome", "Stand in the home cell to configure containers."));
+            ImGuiMCP::TextColored(ImGuiMCP::ImVec4(1.0f, 0.6f, 0.3f, 1.0f), TR("$UI", "standInHome", "Stand in the home cell to configure containers."));
         }
 
-        ImGui::Spacing();
-        ImGui::TextColored(COL_WHITE, TR("$Categories", "masterChest", "Master Chest"));
-        ImGui::SetItemTooltip(TR("$UI", "masterChestHelp", "The primary container for this cell. Items that don\'t fit any category go here."));
+        ImGuiMCP::Spacing();
+        ImGuiMCP::TextColored(COL_WHITE, TR("$Categories", "masterChest", "Master Chest"));
+        ImGuiMCP::SetItemTooltip(TR("$UI", "masterChestHelp", "The primary container for this cell. Items that don\'t fit any category go here."));
         RenderContainerCombo("##masterChest", cs.masterChestEditorID, cellData, enabled, COL_WHITE);
 
-        ImGui::Spacing();
-        ImGui::Separator();
-        ImGui::TextWrapped(TR("$UI", "priorityHelp", "Priority: items first go into their specific subcategory container. If no subcategory container is assigned, items fall back to the main category container."));
+        ImGuiMCP::Spacing();
+        ImGuiMCP::Separator();
+        ImGuiMCP::TextWrapped(TR("$UI", "priorityHelp", "Priority: items first go into their specific subcategory container. If no subcategory container is assigned, items fall back to the main category container."));
 
-        ImGui::Spacing();
-        ImGui::Separator();
-        ImGui::TextColored(COL_WEAPONS, TR("$Categories", "weapons", "Weapons"));
+        ImGuiMCP::Spacing();
+        ImGuiMCP::Separator();
+        ImGuiMCP::TextColored(COL_WEAPONS, TR("$Categories", "weapons", "Weapons"));
         RenderContainerCombo("##weapons", cs.weapons, cellData, enabled, COL_WEAPONS);
-        ImGui::Indent();
+        ImGuiMCP::Indent();
         RenderSubLabel(TR("$Categories", "oneHanded", "One-Handed"), COL_WEAPONS);
         RenderContainerCombo("##weapons1H", cs.weapons_OneHanded, cellData, enabled, COL_WEAPONS);
         RenderSubLabel(TR("$Categories", "twoHanded", "Two-Handed"), COL_WEAPONS);
@@ -358,13 +358,13 @@ namespace
         RenderContainerCombo("##weaponsBow", cs.weapons_Archery, cellData, enabled, COL_WEAPONS);
         RenderSubLabel(TR("$Categories", "staves", "Staves"), COL_WEAPONS);
         RenderContainerCombo("##weaponsStaves", cs.weapons_Staves, cellData, enabled, COL_WEAPONS);
-        ImGui::Unindent();
+        ImGuiMCP::Unindent();
 
-        ImGui::Spacing();
-        ImGui::Separator();
-        ImGui::TextColored(COL_ARMOR, TR("$Categories", "armor", "Armor"));
+        ImGuiMCP::Spacing();
+        ImGuiMCP::Separator();
+        ImGuiMCP::TextColored(COL_ARMOR, TR("$Categories", "armor", "Armor"));
         RenderContainerCombo("##armor", cs.armor, cellData, enabled, COL_ARMOR);
-        ImGui::Indent();
+        ImGuiMCP::Indent();
         RenderSubLabel(TR("$Categories", "light", "Light"), COL_ARMOR);
         RenderContainerCombo("##armorLight", cs.armor_Light, cellData, enabled, COL_ARMOR);
         RenderSubLabel(TR("$Categories", "heavy", "Heavy"), COL_ARMOR);
@@ -373,35 +373,35 @@ namespace
         RenderContainerCombo("##armorClothing", cs.armor_Clothing, cellData, enabled, COL_ARMOR);
         RenderSubLabel(TR("$Categories", "shield", "Shield"), COL_ARMOR);
         RenderContainerCombo("##armorShield", cs.armor_Shield, cellData, enabled, COL_ARMOR);
-        ImGui::Unindent();
+        ImGuiMCP::Unindent();
 
-        ImGui::Spacing();
-        ImGui::Separator();
-        ImGui::TextColored(COL_JEWELRY, TR("$Categories", "jewelry", "Jewelry"));
+        ImGuiMCP::Spacing();
+        ImGuiMCP::Separator();
+        ImGuiMCP::TextColored(COL_JEWELRY, TR("$Categories", "jewelry", "Jewelry"));
         RenderContainerCombo("##jewelry", cs.jewelry, cellData, enabled, COL_JEWELRY);
-        ImGui::Indent();
+        ImGuiMCP::Indent();
         RenderSubLabel(TR("$Categories", "rings", "Rings"), COL_JEWELRY);
         RenderContainerCombo("##jewelryRings", cs.jewelry_Rings, cellData, enabled, COL_JEWELRY);
         RenderSubLabel(TR("$Categories", "amulets", "Amulets"), COL_JEWELRY);
         RenderContainerCombo("##jewelryAmulets", cs.jewelry_Amulets, cellData, enabled, COL_JEWELRY);
         RenderSubLabel(TR("$Categories", "circlets", "Circlets"), COL_JEWELRY);
         RenderContainerCombo("##jewelryCirclets", cs.jewelry_Circlets, cellData, enabled, COL_JEWELRY);
-        ImGui::Unindent();
+        ImGuiMCP::Unindent();
 
-        ImGui::Spacing();
-        ImGui::Separator();
-        ImGui::TextColored(COL_POTIONS, TR("$Categories", "potions", "Potions"));
+        ImGuiMCP::Spacing();
+        ImGuiMCP::Separator();
+        ImGuiMCP::TextColored(COL_POTIONS, TR("$Categories", "potions", "Potions"));
         RenderContainerCombo("##potions", cs.potions, cellData, enabled, COL_POTIONS);
-        ImGui::TextColored(COL_POISONS, TR("$Categories", "poisons", "Poisons"));
+        ImGuiMCP::TextColored(COL_POISONS, TR("$Categories", "poisons", "Poisons"));
         RenderContainerCombo("##poisons", cs.poisons, cellData, enabled, COL_POISONS);
-        ImGui::TextColored(COL_SCROLLS, TR("$Categories", "scrolls", "Scrolls"));
+        ImGuiMCP::TextColored(COL_SCROLLS, TR("$Categories", "scrolls", "Scrolls"));
         RenderContainerCombo("##scrolls", cs.scrolls, cellData, enabled, COL_SCROLLS);
 
-        ImGui::Spacing();
-        ImGui::Separator();
-        ImGui::TextColored(COL_CONSUMABLES, TR("$Categories", "consumables", "Consumables"));
+        ImGuiMCP::Spacing();
+        ImGuiMCP::Separator();
+        ImGuiMCP::TextColored(COL_CONSUMABLES, TR("$Categories", "consumables", "Consumables"));
         RenderContainerCombo("##consumables", cs.consumables, cellData, enabled, COL_CONSUMABLES);
-        ImGui::Indent();
+        ImGuiMCP::Indent();
         RenderSubLabel(TR("$Categories", "rawFood", "Raw Food"), COL_CONSUMABLES);
         RenderContainerCombo("##consumablesRaw", cs.consumables_Raw, cellData, enabled, COL_CONSUMABLES);
         RenderSubLabel(TR("$Categories", "cookedFood", "Cooked Food"), COL_CONSUMABLES);
@@ -426,18 +426,18 @@ namespace
             RenderSubLabel(TR("$Categories", "soupsLorerim", "Soups - Lorerim 5"), COL_CONSUMABLES);
             RenderContainerCombo("##consumablesSoups", cs.consumables_Soups, cellData, enabled, COL_CONSUMABLES);
         }
-        ImGui::Unindent();
+        ImGuiMCP::Unindent();
 
-        ImGui::Spacing();
-        ImGui::Separator();
-        ImGui::TextColored(COL_INGREDIENTS, TR("$Categories", "ingredients", "Ingredients"));
+        ImGuiMCP::Spacing();
+        ImGuiMCP::Separator();
+        ImGuiMCP::TextColored(COL_INGREDIENTS, TR("$Categories", "ingredients", "Ingredients"));
         RenderContainerCombo("##ingredients", cs.ingredients, cellData, enabled, COL_INGREDIENTS);
 
-        ImGui::Spacing();
-        ImGui::Separator();
-        ImGui::TextColored(COL_WRITTEN, TR("$Categories", "writtenWorks", "Written Works"));
+        ImGuiMCP::Spacing();
+        ImGuiMCP::Separator();
+        ImGuiMCP::TextColored(COL_WRITTEN, TR("$Categories", "writtenWorks", "Written Works"));
         RenderContainerCombo("##writtenWorks", cs.writtenWorks, cellData, enabled, COL_WRITTEN);
-        ImGui::Indent();
+        ImGuiMCP::Indent();
         RenderSubLabel(TR("$Categories", "books", "Books"), COL_WRITTEN);
         RenderContainerCombo("##wwBooks", cs.writtenWorks_Books, cellData, enabled, COL_WRITTEN);
         RenderSubLabel(TR("$Categories", "notesLettersJournals", "Notes / Letters / Journals"), COL_WRITTEN);
@@ -446,30 +446,30 @@ namespace
         RenderContainerCombo("##wwSkill", cs.writtenWorks_SkillBooks, cellData, enabled, COL_WRITTEN);
         RenderSubLabel(TR("$Categories", "spellBooks", "Spell Books"), COL_WRITTEN);
         RenderContainerCombo("##wwSpell", cs.writtenWorks_SpellBooks, cellData, enabled, COL_WRITTEN);
-        ImGui::Unindent();
+        ImGuiMCP::Unindent();
 
-        ImGui::Spacing();
-        ImGui::Separator();
-        ImGui::TextColored(COL_KEYS, TR("$Categories", "keys", "Keys"));
+        ImGuiMCP::Spacing();
+        ImGuiMCP::Separator();
+        ImGuiMCP::TextColored(COL_KEYS, TR("$Categories", "keys", "Keys"));
         RenderContainerCombo("##keys", cs.keys, cellData, enabled, COL_KEYS);
 
-        ImGui::Spacing();
-        ImGui::Separator();
-        ImGui::TextColored(COL_AMMO, TR("$Categories", "ammunition", "Ammunition"));
+        ImGuiMCP::Spacing();
+        ImGuiMCP::Separator();
+        ImGuiMCP::TextColored(COL_AMMO, TR("$Categories", "ammunition", "Ammunition"));
         RenderContainerCombo("##ammo", cs.ammo, cellData, enabled, COL_AMMO);
-        ImGui::Indent();
+        ImGuiMCP::Indent();
         RenderSubLabel(TR("$Categories", "arrows", "Arrows"), COL_AMMO);
         RenderContainerCombo("##ammoArrows", cs.ammo_Arrows, cellData, enabled, COL_AMMO);
         RenderSubLabel(TR("$Categories", "bolts", "Bolts"), COL_AMMO);
         RenderContainerCombo("##ammoBolts", cs.ammo_Bolts, cellData, enabled, COL_AMMO);
-        ImGui::Unindent();
+        ImGuiMCP::Unindent();
 
 
-        ImGui::Spacing();
-        ImGui::Separator();
-        ImGui::TextColored(COL_MISC, TR("$Categories", "miscellaneous", "Miscellaneous"));
+        ImGuiMCP::Spacing();
+        ImGuiMCP::Separator();
+        ImGuiMCP::TextColored(COL_MISC, TR("$Categories", "miscellaneous", "Miscellaneous"));
         RenderContainerCombo("##misc", cs.misc, cellData, enabled, COL_MISC);
-        ImGui::Indent();
+        ImGuiMCP::Indent();
         RenderSubLabel(TR("$Categories", "ore", "Ore"), COL_MISC);
         RenderContainerCombo("##miscOre", cs.misc_Ore, cellData, enabled, COL_MISC);
         RenderSubLabel(TR("$Categories", "ingot", "Ingot"), COL_MISC);
@@ -492,22 +492,22 @@ namespace
         RenderContainerCombo("##miscLeather", cs.misc_Leather, cellData, enabled, COL_MISC);
         RenderSubLabel(TR("$Categories", "buildingMaterials", "Building Materials"), COL_MISC);
         RenderContainerCombo("##miscBuilding", cs.misc_BuildingMaterials, cellData, enabled, COL_MISC);
-        ImGui::Unindent();
+        ImGuiMCP::Unindent();
     }
 }
 
 void UI::HelpMarker(const char* desc)
 {
-    ImGui::PushStyleColor(ImGuiCol_Text, ImVec4{ 0.55f, 0.55f, 0.55f, 1.0f });
-    ImGui::TextUnformatted("(?)");
-    ImGui::PopStyleColor();
-    if (ImGui::IsItemHovered())
+    ImGuiMCP::PushStyleColor(ImGuiMCP::ImGuiCol_Text, ImGuiMCP::ImVec4{ 0.55f, 0.55f, 0.55f, 1.0f });
+    ImGuiMCP::TextUnformatted("(?)");
+    ImGuiMCP::PopStyleColor();
+    if (ImGuiMCP::IsItemHovered())
     {
-        ImGui::BeginTooltip();
-        ImGui::PushTextWrapPos(ImGui::GetFontSize() * 28.0f);
-        ImGui::TextUnformatted(desc);
-        ImGui::PopTextWrapPos();
-        ImGui::EndTooltip();
+        ImGuiMCP::BeginTooltip();
+        ImGuiMCP::PushTextWrapPos(ImGuiMCP::GetFontSize() * 28.0f);
+        ImGuiMCP::TextUnformatted(desc);
+        ImGuiMCP::PopTextWrapPos();
+        ImGuiMCP::EndTooltip();
     }
 }
 
@@ -535,143 +535,143 @@ void __stdcall UI::RenderGeneral()
 {
     auto& s = Settings::GetSingleton();
     bool changed = false;
-    float winWidth = ImGui::GetWindowWidth();
+    float winWidth = ImGuiMCP::GetWindowWidth();
 
-    ImGui::TextColored(ImVec4(0.7f, 0.85f, 1.0f, 1.0f), TR("$GeneralUI", "title", "General Settings"));
+    ImGuiMCP::TextColored(ImGuiMCP::ImVec4(0.7f, 0.85f, 1.0f, 1.0f), TR("$GeneralUI", "title", "General Settings"));
 
-    ImGui::Separator();
-    ImGui::TextUnformatted(TR("$GeneralUI", "debugSection", "-- Debug --"));
-    ImGui::SameLine(); HelpMarker(TR("$GeneralUI", "debugHelp", "Enable detailed logging for troubleshooting."));
-    ImGui::Separator();
+    ImGuiMCP::Separator();
+    ImGuiMCP::TextUnformatted(TR("$GeneralUI", "debugSection", "-- Debug --"));
+    ImGuiMCP::SameLine(); HelpMarker(TR("$GeneralUI", "debugHelp", "Enable detailed logging for troubleshooting."));
+    ImGuiMCP::Separator();
 
     bool debug = s.debug.load();
-    if (ImGui::Checkbox(TR("$GeneralUI", "enableDebug", "Enable Debug Logging"), &debug)) { s.debug.store(debug); changed = true; }
+    if (ImGuiMCP::Checkbox(TR("$GeneralUI", "enableDebug", "Enable Debug Logging"), &debug)) { s.debug.store(debug); changed = true; }
 
-    ImGui::Spacing();
-    ImGui::Separator();
-    ImGui::TextUnformatted(TR("$GeneralUI", "hotkeysSection", "-- Hotkeys --"));
-    ImGui::SameLine(); HelpMarker(TR("$GeneralUI", "hotkeysHelp", "Set separate keys for stash and resupply. Hold for 500ms to activate."));
-    ImGui::Separator();
+    ImGuiMCP::Spacing();
+    ImGuiMCP::Separator();
+    ImGuiMCP::TextUnformatted(TR("$GeneralUI", "hotkeysSection", "-- Hotkeys --"));
+    ImGuiMCP::SameLine(); HelpMarker(TR("$GeneralUI", "hotkeysHelp", "Set separate keys for stash and resupply. Hold for 500ms to activate."));
+    ImGuiMCP::Separator();
 
-    ImGui::SetNextItemWidth(winWidth * 0.45f);
+    ImGuiMCP::SetNextItemWidth(winWidth * 0.45f);
     {
         int idx = FindComboIndex(dxKbValues, kbComboCount, s.keyboardStashHotkey.load());
-        if (ImGui::Combo(TR("$GeneralUI", "keyboardStash", "Keyboard Stash Hotkey"), &idx, dxKbNames, kbComboCount))
+        if (ImGuiMCP::Combo(TR("$GeneralUI", "keyboardStash", "Keyboard Stash Hotkey"), &idx, dxKbNames, kbComboCount))
         {
             s.keyboardStashHotkey.store(dxKbValues[idx]);
             changed = true;
         }
     }
 
-    ImGui::SetNextItemWidth(winWidth * 0.45f);
+    ImGuiMCP::SetNextItemWidth(winWidth * 0.45f);
     {
         int idx = FindComboIndex(dxKbValues, kbComboCount, s.keyboardResupplyHotkey.load());
-        if (ImGui::Combo(TR("$GeneralUI", "keyboardResupply", "Keyboard Resupply Hotkey"), &idx, dxKbNames, kbComboCount))
+        if (ImGuiMCP::Combo(TR("$GeneralUI", "keyboardResupply", "Keyboard Resupply Hotkey"), &idx, dxKbNames, kbComboCount))
         {
             s.keyboardResupplyHotkey.store(dxKbValues[idx]);
             changed = true;
         }
     }
 
-    ImGui::SetNextItemWidth(winWidth * 0.45f);
+    ImGuiMCP::SetNextItemWidth(winWidth * 0.45f);
     {
         int idx = FindComboIndex(dxGpValues, gpComboCount, s.gamepadStashHotkey.load());
-        if (ImGui::Combo(TR("$GeneralUI", "gamepadStash", "Gamepad Stash Hotkey"), &idx, dxGpNames, gpComboCount))
+        if (ImGuiMCP::Combo(TR("$GeneralUI", "gamepadStash", "Gamepad Stash Hotkey"), &idx, dxGpNames, gpComboCount))
         {
             s.gamepadStashHotkey.store(dxGpValues[idx]);
             changed = true;
         }
     }
 
-    ImGui::SetNextItemWidth(winWidth * 0.45f);
+    ImGuiMCP::SetNextItemWidth(winWidth * 0.45f);
     {
         int idx = FindComboIndex(dxGpValues, gpComboCount, s.gamepadResupplyHotkey.load());
-        if (ImGui::Combo(TR("$GeneralUI", "gamepadResupply", "Gamepad Resupply Hotkey"), &idx, dxGpNames, gpComboCount))
+        if (ImGuiMCP::Combo(TR("$GeneralUI", "gamepadResupply", "Gamepad Resupply Hotkey"), &idx, dxGpNames, gpComboCount))
         {
             s.gamepadResupplyHotkey.store(dxGpValues[idx]);
             changed = true;
         }
     }
 
-    ImGui::Spacing();
-    ImGui::Separator();
-    ImGui::TextUnformatted(TR("$GeneralUI", "compatSection", "-- Compatibility --"));
-    ImGui::SameLine(); HelpMarker(TR("$GeneralUI", "compatHelp", "Enable support for mods with extra item identifiers."));
-    ImGui::Separator();
+    ImGuiMCP::Spacing();
+    ImGuiMCP::Separator();
+    ImGuiMCP::TextUnformatted(TR("$GeneralUI", "compatSection", "-- Compatibility --"));
+    ImGuiMCP::SameLine(); HelpMarker(TR("$GeneralUI", "compatHelp", "Enable support for mods with extra item identifiers."));
+    ImGuiMCP::Separator();
 
     bool l5 = s.lorerim5Compat.load();
-    if (ImGui::Checkbox(TR("$GeneralUI", "lorerim5", "Lorerim 5 Compatiblity"), &l5))
+    if (ImGuiMCP::Checkbox(TR("$GeneralUI", "lorerim5", "Lorerim 5 Compatiblity"), &l5))
     {
         s.lorerim5Compat.store(l5);
         changed = true;
     }
-    ImGui::SameLine(); UI::HelpMarker(TR("$GeneralUI", "lorerim5Help", "Lorerim 5 adds extra identifiers that can be used to have more specific categorization."));
+    ImGuiMCP::SameLine(); UI::HelpMarker(TR("$GeneralUI", "lorerim5Help", "Lorerim 5 adds extra identifiers that can be used to have more specific categorization."));
 
-    ImGui::Spacing();
-    ImGui::Separator();
-    ImGui::TextUnformatted(TR("$GeneralUI", "resupplyPrioritySection", "-- Resupply Priority --"));
-    ImGui::SameLine(); HelpMarker(TR("$GeneralUI", "resupplyPriorityHelp", "When enabled, the strongest (or most filling/hydrating) items are given first during resupply. When disabled, the weakest items are given first."));
-    ImGui::Separator();
+    ImGuiMCP::Spacing();
+    ImGuiMCP::Separator();
+    ImGuiMCP::TextUnformatted(TR("$GeneralUI", "resupplyPrioritySection", "-- Resupply Priority --"));
+    ImGuiMCP::SameLine(); HelpMarker(TR("$GeneralUI", "resupplyPriorityHelp", "When enabled, the strongest (or most filling/hydrating) items are given first during resupply. When disabled, the weakest items are given first."));
+    ImGuiMCP::Separator();
 
     bool b = s.prioritizeStrongestHealing.load();
-    if (ImGui::Checkbox(TR("$GeneralUI", "priorityHealing", "Prioritize strongest healing potion"), &b)) { s.prioritizeStrongestHealing.store(b); changed = true; }
-    ImGui::SameLine(); UI::HelpMarker(TR("$GeneralUI", "priorityHealingHelp", "When checked, resupply gives the highest magnitude healing potions first."));
+    if (ImGuiMCP::Checkbox(TR("$GeneralUI", "priorityHealing", "Prioritize strongest healing potion"), &b)) { s.prioritizeStrongestHealing.store(b); changed = true; }
+    ImGuiMCP::SameLine(); UI::HelpMarker(TR("$GeneralUI", "priorityHealingHelp", "When checked, resupply gives the highest magnitude healing potions first."));
 
     b = s.prioritizeStrongestMagicka.load();
-    if (ImGui::Checkbox(TR("$GeneralUI", "priorityMagicka", "Prioritize strongest magicka restoration potion"), &b)) { s.prioritizeStrongestMagicka.store(b); changed = true; }
-    ImGui::SameLine(); UI::HelpMarker(TR("$GeneralUI", "priorityMagickaHelp", "When checked, resupply gives the highest magnitude magicka potions first."));
+    if (ImGuiMCP::Checkbox(TR("$GeneralUI", "priorityMagicka", "Prioritize strongest magicka restoration potion"), &b)) { s.prioritizeStrongestMagicka.store(b); changed = true; }
+    ImGuiMCP::SameLine(); UI::HelpMarker(TR("$GeneralUI", "priorityMagickaHelp", "When checked, resupply gives the highest magnitude magicka potions first."));
 
     b = s.prioritizeStrongestStamina.load();
-    if (ImGui::Checkbox(TR("$GeneralUI", "priorityStamina", "Prioritize strongest stamina restoration potion"), &b)) { s.prioritizeStrongestStamina.store(b); changed = true; }
-    ImGui::SameLine(); UI::HelpMarker(TR("$GeneralUI", "priorityStaminaHelp", "When checked, resupply gives the highest magnitude stamina potions first."));
+    if (ImGuiMCP::Checkbox(TR("$GeneralUI", "priorityStamina", "Prioritize strongest stamina restoration potion"), &b)) { s.prioritizeStrongestStamina.store(b); changed = true; }
+    ImGuiMCP::SameLine(); UI::HelpMarker(TR("$GeneralUI", "priorityStaminaHelp", "When checked, resupply gives the highest magnitude stamina potions first."));
 
     b = s.prioritizeStrongestArrow.load();
-    if (ImGui::Checkbox(TR("$GeneralUI", "priorityArrow", "Prioritize strongest arrow"), &b)) { s.prioritizeStrongestArrow.store(b); changed = true; }
-    ImGui::SameLine(); UI::HelpMarker(TR("$GeneralUI", "priorityArrowHelp", "When checked, resupply gives the highest damage arrows first."));
+    if (ImGuiMCP::Checkbox(TR("$GeneralUI", "priorityArrow", "Prioritize strongest arrow"), &b)) { s.prioritizeStrongestArrow.store(b); changed = true; }
+    ImGuiMCP::SameLine(); UI::HelpMarker(TR("$GeneralUI", "priorityArrowHelp", "When checked, resupply gives the highest damage arrows first."));
 
     b = s.prioritizeStrongestBolt.load();
-    if (ImGui::Checkbox(TR("$GeneralUI", "priorityBolt", "Prioritize strongest bolt"), &b)) { s.prioritizeStrongestBolt.store(b); changed = true; }
-    ImGui::SameLine(); UI::HelpMarker(TR("$GeneralUI", "priorityBoltHelp", "When checked, resupply gives the highest damage bolts first."));
+    if (ImGuiMCP::Checkbox(TR("$GeneralUI", "priorityBolt", "Prioritize strongest bolt"), &b)) { s.prioritizeStrongestBolt.store(b); changed = true; }
+    ImGuiMCP::SameLine(); UI::HelpMarker(TR("$GeneralUI", "priorityBoltHelp", "When checked, resupply gives the highest damage bolts first."));
 
-    ImGui::BeginDisabled(!l5);
+    ImGuiMCP::BeginDisabled(!l5);
     b = s.prioritizeFillingFood.load();
-    if (ImGui::Checkbox(TR("$GeneralUI", "priorityFood", "Prioritize most filling food item - Lorerim 5 only"), &b)) { s.prioritizeFillingFood.store(b); changed = true; }
-    ImGui::SameLine(); UI::HelpMarker(TR("$GeneralUI", "priorityFoodHelp", "When checked, resupply gives the most filling food items first. Requires Lorerim 5."));
+    if (ImGuiMCP::Checkbox(TR("$GeneralUI", "priorityFood", "Prioritize most filling food item - Lorerim 5 only"), &b)) { s.prioritizeFillingFood.store(b); changed = true; }
+    ImGuiMCP::SameLine(); UI::HelpMarker(TR("$GeneralUI", "priorityFoodHelp", "When checked, resupply gives the most filling food items first. Requires Lorerim 5."));
 
     b = s.prioritizeHydratingDrink.load();
-    if (ImGui::Checkbox(TR("$GeneralUI", "priorityDrink", "Prioritize most hydrating drink item - Lorerim 5 only"), &b)) { s.prioritizeHydratingDrink.store(b); changed = true; }
-    ImGui::SameLine(); UI::HelpMarker(TR("$GeneralUI", "priorityDrinkHelp", "When checked, resupply gives the most hydrating drink items first. Requires Lorerim 5."));
+    if (ImGuiMCP::Checkbox(TR("$GeneralUI", "priorityDrink", "Prioritize most hydrating drink item - Lorerim 5 only"), &b)) { s.prioritizeHydratingDrink.store(b); changed = true; }
+    ImGuiMCP::SameLine(); UI::HelpMarker(TR("$GeneralUI", "priorityDrinkHelp", "When checked, resupply gives the most hydrating drink items first. Requires Lorerim 5."));
 
     b = s.allowAlcohol.load();
-    if (ImGui::Checkbox(TR("$GeneralUI", "allowAlcohol", "Allow alcohol as drink - Lorerim 5 only"), &b)) { s.allowAlcohol.store(b); changed = true; }
-    ImGui::SameLine(); UI::HelpMarker(TR("$GeneralUI", "allowAlcoholHelp", "When enabled, alcohol will be used for drink resupply if no non-alcoholic drinks are available. Requires Lorerim 5."));
-    ImGui::EndDisabled();
+    if (ImGuiMCP::Checkbox(TR("$GeneralUI", "allowAlcohol", "Allow alcohol as drink - Lorerim 5 only"), &b)) { s.allowAlcohol.store(b); changed = true; }
+    ImGuiMCP::SameLine(); UI::HelpMarker(TR("$GeneralUI", "allowAlcoholHelp", "When enabled, alcohol will be used for drink resupply if no non-alcoholic drinks are available. Requires Lorerim 5."));
+    ImGuiMCP::EndDisabled();
 
-    ImGui::Spacing();
-    ImGui::Separator();
-    ImGui::TextUnformatted(TR("$GeneralUI", "stashSection", "-- Stash --"));
-    ImGui::SameLine(); HelpMarker(TR("$GeneralUI", "stashHelp", "Settings for item stashing behavior."));
-    ImGui::Separator();
+    ImGuiMCP::Spacing();
+    ImGuiMCP::Separator();
+    ImGuiMCP::TextUnformatted(TR("$GeneralUI", "stashSection", "-- Stash --"));
+    ImGuiMCP::SameLine(); HelpMarker(TR("$GeneralUI", "stashHelp", "Settings for item stashing behavior."));
+    ImGuiMCP::Separator();
 
     b = s.stashUnmatchedToMaster.load();
-    if (ImGui::Checkbox(TR("$GeneralUI", "stashUnmatched", "Stash items that don\'t fit any category into the Master Chest"), &b)) { s.stashUnmatchedToMaster.store(b); changed = true; }
-    ImGui::SameLine(); UI::HelpMarker(TR("$GeneralUI", "stashUnmatchedHelp", "When checked, items that don\'t match any category are placed into the Master Chest."));
+    if (ImGuiMCP::Checkbox(TR("$GeneralUI", "stashUnmatched", "Stash items that don\'t fit any category into the Master Chest"), &b)) { s.stashUnmatchedToMaster.store(b); changed = true; }
+    ImGuiMCP::SameLine(); UI::HelpMarker(TR("$GeneralUI", "stashUnmatchedHelp", "When checked, items that don\'t match any category are placed into the Master Chest."));
 
-    ImGui::Spacing();
+    ImGuiMCP::Spacing();
     int minVal = s.minimumValueValuable.load();
-    ImGui::SetNextItemWidth(winWidth * 0.45f);
-    if (ImGui::SliderInt(TR("$GeneralUI", "minimumValuable", "Minimum value to be considered a Valuable"), &minVal, 1, 5000))
+    ImGuiMCP::SetNextItemWidth(winWidth * 0.45f);
+    if (ImGuiMCP::SliderInt(TR("$GeneralUI", "minimumValuable", "Minimum value to be considered a Valuable"), &minVal, 1, 5000))
     {
         s.minimumValueValuable.store(minVal);
         changed = true;
     }
-    ImGui::SameLine(); UI::HelpMarker(TR("$GeneralUI", "minimumValuableHelp", "Items in the Misc category worth this many gold or more are classified as Valuables."));
+    ImGuiMCP::SameLine(); UI::HelpMarker(TR("$GeneralUI", "minimumValuableHelp", "Items in the Misc category worth this many gold or more are classified as Valuables."));
 
-    ImGui::Spacing();
-    ImGui::Separator();
-    ImGui::TextUnformatted(TR("$GeneralUI", "blacklistSection", "-- Blacklist --"));
-    ImGui::SameLine(); UI::HelpMarker(TR("$GeneralUI", "blacklistHelp", "Items matching these terms will never be stashed from your inventory."));
-    ImGui::Separator();
+    ImGuiMCP::Spacing();
+    ImGuiMCP::Separator();
+    ImGuiMCP::TextUnformatted(TR("$GeneralUI", "blacklistSection", "-- Blacklist --"));
+    ImGuiMCP::SameLine(); UI::HelpMarker(TR("$GeneralUI", "blacklistHelp", "Items matching these terms will never be stashed from your inventory."));
+    ImGuiMCP::Separator();
 
     RenderBlacklistSection(changed);
 
@@ -682,24 +682,24 @@ void __stdcall UI::RenderResupply()
 {
     auto& s = Settings::GetSingleton();
     bool changed = false;
-    float winWidth = ImGui::GetWindowWidth();
+    float winWidth = ImGuiMCP::GetWindowWidth();
     bool l5 = s.lorerim5Compat.load();
 
-    ImGui::TextColored(ImVec4(0.7f, 0.85f, 1.0f, 1.0f), TR("$ResupplyUI", "title", "Resupply Settings"));
-    ImGui::TextWrapped(TR("$ResupplyUI", "description", "Choose the items and amount to give the player during resupply from storage."));
+    ImGuiMCP::TextColored(ImGuiMCP::ImVec4(0.7f, 0.85f, 1.0f, 1.0f), TR("$ResupplyUI", "title", "Resupply Settings"));
+    ImGuiMCP::TextWrapped(TR("$ResupplyUI", "description", "Choose the items and amount to give the player during resupply from storage."));
 
-    ImGui::Separator();
-    ImGui::Spacing();
+    ImGuiMCP::Separator();
+    ImGuiMCP::Spacing();
 
     auto renderSlider = [&](const char* label, std::atomic<int>& value, int max, const char* help) {
         int v = value.load();
-        ImGui::SetNextItemWidth(winWidth * 0.45f);
-        if (ImGui::SliderInt(label, &v, 0, max))
+        ImGuiMCP::SetNextItemWidth(winWidth * 0.45f);
+        if (ImGuiMCP::SliderInt(label, &v, 0, max))
         {
             value.store(v);
             changed = true;
         }
-        ImGui::SameLine(); UI::HelpMarker(help);
+        ImGuiMCP::SameLine(); UI::HelpMarker(help);
     };
 
     renderSlider(TR("$ResupplyUI", "healingPotions", "Healing Potions"), s.resupplyHealingPotions, 100,
@@ -722,33 +722,33 @@ void __stdcall UI::RenderResupply()
     renderSlider(TR("$ResupplyUI", "food", "Food"), s.resupplyCookedFood, 100,
         TR("$ResupplyUI", "foodHelp", "Number of food items to give during resupply. Cooked food is used first, then raw if cooked runs out."));
 
-    ImGui::BeginDisabled(!l5);
+    ImGuiMCP::BeginDisabled(!l5);
     renderSlider(TR("$ResupplyUI", "foodLorerim", "Food - Lorerim 5 only"), s.resupplyFood, 100,
         TR("$ResupplyUI", "foodLorerimHelp", "Number of food items to give during resupply. Requires Lorerim 5."));
     renderSlider(TR("$ResupplyUI", "drinksLorerim", "Drinks - Lorerim 5 only"), s.resupplyDrink, 100,
         TR("$ResupplyUI", "drinksLorerimHelp", "Number of drink items to give during resupply. Requires Lorerim 5."));
-    ImGui::EndDisabled();
+    ImGuiMCP::EndDisabled();
 
-    ImGui::Spacing();
-    ImGui::Separator();
-    ImGui::TextColored(ImVec4(0.9f, 0.9f, 0.6f, 1.0f), TR("$ResupplyUI", "customItems", "Custom Items"));
-    ImGui::SameLine(); UI::HelpMarker(TR("$ResupplyUI", "customItemsHelp", "Select specific items to give during resupply."));
+    ImGuiMCP::Spacing();
+    ImGuiMCP::Separator();
+    ImGuiMCP::TextColored(ImGuiMCP::ImVec4(0.9f, 0.9f, 0.6f, 1.0f), TR("$ResupplyUI", "customItems", "Custom Items"));
+    ImGuiMCP::SameLine(); UI::HelpMarker(TR("$ResupplyUI", "customItemsHelp", "Select specific items to give during resupply."));
 
     for (int i = 0; i < 8; ++i)
     {
-        ImGui::PushID(300 + i);
+        ImGuiMCP::PushID(300 + i);
 
         char label[64];
         snprintf(label, sizeof(label), TR("$ResupplyUI", "customItemFormat", "Custom Item %d"), i + 1);
 
-        if (ImGui::TreeNode(label))
+        if (ImGuiMCP::TreeNode(label))
         {
-            ImGui::SetNextItemWidth(winWidth * 0.4f);
+            ImGuiMCP::SetNextItemWidth(winWidth * 0.4f);
             char filterBuf[256];
             strncpy_s(filterBuf, s.resupplyCustom[i].filterText.c_str(), sizeof(filterBuf) - 1);
             filterBuf[sizeof(filterBuf) - 1] = '\0';
 
-            if (ImGui::InputTextWithHint("##customFilter", TR("$ResupplyUI", "filterItems", "Filter items..."), filterBuf, sizeof(filterBuf)))
+            if (ImGuiMCP::InputTextWithHint("##customFilter", TR("$ResupplyUI", "filterItems", "Filter items..."), filterBuf, sizeof(filterBuf)))
             {
                 s.resupplyCustom[i].filterText = filterBuf;
                 changed = true;
@@ -795,20 +795,20 @@ void __stdcall UI::RenderResupply()
                 }
             }
 
-            if (ImGui::BeginCombo("##customDropdown", preview))
+            if (ImGuiMCP::BeginCombo("##customDropdown", preview))
             {
-                if (ImGui::Selectable(TR("$UI", "none", "[None]"), selectedCustomIdx[i] < 0))
+                if (ImGuiMCP::Selectable(TR("$UI", "none", "[None]"), selectedCustomIdx[i] < 0))
                 {
                     selectedCustomIdx[i] = -1;
                     s.resupplyCustom[i].selectedEditorID.clear();
                     changed = true;
                 }
-                if (selectedCustomIdx[i] < 0) ImGui::SetItemDefaultFocus();
+                if (selectedCustomIdx[i] < 0) ImGuiMCP::SetItemDefaultFocus();
 
                 for (size_t j = 0; j < filtered.size(); ++j)
                 {
                     bool isSel = (static_cast<int>(j) == selectedCustomIdx[i]);
-                    if (ImGui::Selectable(filtered[j].label.c_str(), isSel))
+                    if (ImGuiMCP::Selectable(filtered[j].label.c_str(), isSel))
                     {
                         selectedCustomIdx[i] = static_cast<int>(j);
                         auto& entry = cache[filtered[j].cacheIndex];
@@ -818,22 +818,22 @@ void __stdcall UI::RenderResupply()
                             s.resupplyCustom[i].selectedEditorID = std::format("{:08X}", entry.formID);
                         changed = true;
                     }
-                    if (isSel) ImGui::SetItemDefaultFocus();
+                    if (isSel) ImGuiMCP::SetItemDefaultFocus();
                 }
-                ImGui::EndCombo();
+                ImGuiMCP::EndCombo();
             }
 
             int countVal = s.resupplyCustom[i].count;
-            ImGui::SetNextItemWidth(winWidth * 0.3f);
-            if (ImGui::SliderInt("##customCount", &countVal, 0, 100))
+            ImGuiMCP::SetNextItemWidth(winWidth * 0.3f);
+            if (ImGuiMCP::SliderInt("##customCount", &countVal, 0, 100))
             {
                 s.resupplyCustom[i].count = countVal;
                 changed = true;
             }
 
-            ImGui::TreePop();
+            ImGuiMCP::TreePop();
         }
-        ImGui::PopID();
+        ImGuiMCP::PopID();
     }
 
     if (changed) s.Save();
@@ -844,10 +844,10 @@ void __stdcall UI::RenderResupply()
         auto& bl = Settings::GetSingleton().blacklist;
 
         static char inputBuf[256] = "";
-        ImGui::SetNextItemWidth(ImGui::GetWindowWidth() * 0.55f);
-        ImGui::InputTextWithHint("##blacklistInput", TR("$GeneralUI", "blacklistInput", "Item name or EditorID..."), inputBuf, sizeof(inputBuf));
-        ImGui::SameLine();
-        if (ImGui::Button(TR("$GeneralUI", "add", "Add"))) {
+        ImGuiMCP::SetNextItemWidth(ImGuiMCP::GetWindowWidth() * 0.55f);
+        ImGuiMCP::InputTextWithHint("##blacklistInput", TR("$GeneralUI", "blacklistInput", "Item name or EditorID..."), inputBuf, sizeof(inputBuf));
+        ImGuiMCP::SameLine();
+        if (ImGuiMCP::Button(TR("$GeneralUI", "add", "Add"))) {
             std::string trimmed = inputBuf;
             trimmed.erase(0, trimmed.find_first_not_of(" \t"));
             trimmed.erase(trimmed.find_last_not_of(" \t") + 1);
@@ -863,24 +863,24 @@ void __stdcall UI::RenderResupply()
                 memset(inputBuf, 0, sizeof(inputBuf));
             }
         }
-        ImGui::SameLine();
+        ImGuiMCP::SameLine();
         UI::HelpMarker(TR("$GeneralUI", "blacklistInputHelp", "Type part of an item\'s name or EditorID (case-insensitive partial match). Items matching any term here will never be stashed."));
 
         if (!bl.empty()) {
-            ImGui::Spacing();
-            ImGui::TextUnformatted(TR("$GeneralUI", "blacklistedItems", "Blacklisted items:"));
+            ImGuiMCP::Spacing();
+            ImGuiMCP::TextUnformatted(TR("$GeneralUI", "blacklistedItems", "Blacklisted items:"));
             std::string toRemove;
             for (auto& item : bl) {
-                ImGui::BulletText("%s", item.c_str());
-                ImGui::SameLine();
-                ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.6f, 0.1f, 0.1f, 1.0f));
-                ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.8f, 0.1f, 0.1f, 1.0f));
-                ImGui::PushID(item.c_str());
-                if (ImGui::SmallButton("X")) {
+                ImGuiMCP::BulletText("%s", item.c_str());
+                ImGuiMCP::SameLine();
+                ImGuiMCP::PushStyleColor(ImGuiMCP::ImGuiCol_Button, ImGuiMCP::ImVec4(0.6f, 0.1f, 0.1f, 1.0f));
+                ImGuiMCP::PushStyleColor(ImGuiMCP::ImGuiCol_ButtonHovered, ImGuiMCP::ImVec4(0.8f, 0.1f, 0.1f, 1.0f));
+                ImGuiMCP::PushID(item.c_str());
+                if (ImGuiMCP::SmallButton("X")) {
                     toRemove = item;
                 }
-                ImGui::PopID();
-                ImGui::PopStyleColor(2);
+                ImGuiMCP::PopID();
+                ImGuiMCP::PopStyleColor(2);
             }
             if (!toRemove.empty()) {
                 auto it = std::find(bl.begin(), bl.end(), toRemove);
