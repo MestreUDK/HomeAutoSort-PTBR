@@ -2,7 +2,7 @@
 
 Tradução e adaptação de localização para **Home Auto Sort 2.4**, de **zfroggyman**, com suporte a textos externos em PT-BR por meio do arquivo `HomeAutoSort_Translation.ini`.
 
-> [!IMPORTANTE]
+> [!IMPORTANT]
 > Este repositório **não é o mod original** e não pretende substituir o trabalho do autor.
 > O **Home Auto Sort 2.4 original é obrigatório**. Este projeto distribui uma versão modificada da DLL exclusivamente para permitir a localização completa da interface em português brasileiro.
 
