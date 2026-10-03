@@ -1,14 +1,42 @@
-# Home Auto Sort 2.4 — PT-BR localization build
+# Home Auto Sort 2.4 — Tradução PT-BR
 
-Projeto de desenvolvimento para compilar uma versão localizada do **Home Auto Sort 2.4**.
+Tradução e adaptação de localização para **Home Auto Sort 2.4**, de **zfroggyman**, com suporte a textos externos em PT-BR por meio do arquivo `HomeAutoSort_Translation.ini`.
 
-> Este repositório **não é o mod original**. Ele contém o código-fonte disponibilizado pelo autor do Home Auto Sort, com uma alteração focada em externalizar textos da interface para `HomeAutoSort_Translation.ini`, permitindo a tradução completa para PT-BR.
+> [!IMPORTANT]
+> Este repositório **não é o mod original** e não pretende substituir o trabalho do autor.
+> O **Home Auto Sort 2.4 original é obrigatório**. Este projeto distribui uma versão modificada da DLL exclusivamente para permitir a localização completa da interface em português brasileiro.
 
-## Objetivo
+## 📌 Informações do projeto
 
-A versão 2.4 possui diversos textos de interface diretamente dentro de `HomeAutoSort.dll`, inclusive menus, categorias, tooltips e os prompts do SkyPrompt. Esta adaptação adiciona uma pequena camada de localização e mantém textos ingleses como fallback caso uma chave de tradução esteja ausente.
+| Item | Informação |
+| --- | --- |
+| Mod base | Home Auto Sort 2.4 |
+| Autor original | zfroggyman |
+| Tradução / adaptação PT-BR | MestreUDK |
+| Idioma | Português do Brasil |
+| Status | Funcional e testado em jogo |
+| Build | GitHub Actions + XMake |
+| Licença do código derivado | GPL-3.0-or-later |
 
-Exemplos:
+## 🔗 Links
+
+- **Autor original — zfroggyman:** [Perfil no Nexus Mods](https://www.nexusmods.com/profile/zfroggyman)
+- **Mod original — Home Auto Sort:** [Nexus Mods](https://www.nexusmods.com/skyrimspecialedition/mods/183379)
+- **Código-fonte desta adaptação:** [HomeAutoSort-PTBR no GitHub](https://github.com/MestreUDK/HomeAutoSort-PTBR)
+
+## 🇧🇷 Sobre esta tradução
+
+O Home Auto Sort possui vários textos de interface diretamente dentro de `HomeAutoSort.dll`, incluindo menus, categorias, tooltips e prompts utilizados pelo SkyPrompt.
+
+Esta adaptação adiciona uma pequena camada de localização para que esses textos sejam lidos de:
+
+```text
+SKSE/Plugins/HomeAutoSort_Translation.ini
+```
+
+Quando uma chave de tradução não é encontrada, o texto original em inglês é utilizado como fallback.
+
+Exemplos de textos localizados:
 
 - `Master Chest` → `Baú Principal`
 - `Written Works` → `Obras Escritas`
@@ -16,89 +44,171 @@ Exemplos:
 - `Hold to Stash` → `Segure para Guardar`
 - `Hold to Resupply` → `Segure para Reabastecer`
 
-## Compilar pelo GitHub Actions
+A adaptação é focada em **localização**. A lógica e as funcionalidades do Home Auto Sort continuam sendo trabalho do autor original.
 
-1. Crie um repositório no GitHub.
-2. Extraia o conteúdo deste pacote e envie **o conteúdo da pasta**, preservando `.github/workflows/build.yml`.
-3. Faça o commit para a branch `main`.
-4. Abra a aba **Actions** do repositório.
-5. Selecione **Build Home Auto Sort PT-BR**.
-6. O workflow deve iniciar automaticamente após o push. Também é possível usar **Run workflow**.
-7. Quando terminar, abra a execução e baixe o artifact **HomeAutoSort-PTBR-2.4**.
-8. Dentro dele haverá `HomeAutoSort_PTBR_2.4_GitHubBuild.zip`, pronto para teste no MO2.
+## ✅ Status dos testes
 
-## Como o Actions compila
+A build PT-BR foi compilada com sucesso pelo GitHub Actions e testada em jogo junto ao Home Auto Sort 2.4 original.
 
-O workflow usa um runner Windows e:
+Foram verificados:
 
-1. instala XMake 3.1.1;
-2. baixa CommonLibSSE-NG v9.1.0;
-3. baixa os headers oficiais atuais das APIs do SKSE Menu Framework e SkyPrompt;
-4. usa a configuração universal do CommonLibSSE-NG para aproveitar o bundle pré-compilado quando disponível;
-5. compila `HomeAutoSort.dll` em modo `releasedbg`;
-6. cria um ZIP para MO2 contendo a DLL e a tradução PT-BR.
+- carregamento da DLL pelo SKSE;
+- inicialização normal do Skyrim;
+- exibição do Home Auto Sort no SKSE Menu Framework;
+- carregamento da interface em PT-BR;
+- funcionamento dos menus de configuração;
+- funcionamento dos prompts localizados;
+- funcionamento do sistema de guardar itens (`Stash`);
+- funcionamento das funções principais utilizadas durante o teste.
 
-## Instalação para teste
+O pacote testado mantém o mod original instalado e utiliza esta adaptação com prioridade maior no gerenciador de mods.
 
-Instale primeiro o **Home Auto Sort 2.4 original**, com seus requisitos. Depois instale o ZIP gerado por este projeto abaixo dele no painel esquerdo do Mod Organizer 2.
+## 📦 Requisitos
 
-Ordem esperada:
+Instale o **Home Auto Sort 2.4 original** e todos os requisitos indicados na página oficial do mod.
+
+Entre as integrações utilizadas pelo Home Auto Sort estão:
+
+- SKSE;
+- SKSE Menu Framework;
+- SkyPrompt.
+
+Consulte sempre a página oficial do Home Auto Sort para verificar os requisitos e versões atualmente recomendados.
+
+## 🛠️ Instalação
+
+### Mod Organizer 2
+
+1. Instale o **Home Auto Sort 2.4 original** e seus requisitos.
+2. Instale o arquivo ZIP da tradução PT-BR.
+3. No painel esquerdo do MO2, deixe a tradução **abaixo do mod original**, para que os arquivos desta adaptação tenham prioridade.
+4. Inicie o Skyrim pelo SKSE.
+
+Ordem recomendada:
 
 ```text
 Home Auto Sort 2.4
-Home Auto Sort - PT-BR 2.4 TESTE
+Home Auto Sort 2.4 - PT-BR
 ```
 
-O pacote gerado sobrescreve apenas:
+O pacote PT-BR substitui/adiciona apenas:
 
 ```text
 SKSE/Plugins/HomeAutoSort.dll
 SKSE/Plugins/HomeAutoSort_Translation.ini
 ```
 
-Ele não inclui nem substitui o arquivo pessoal `HomeAutoSort.ini` do usuário.
+O projeto **não inclui nem substitui** o arquivo pessoal:
 
-## Requisitos em jogo
+```text
+SKSE/Plugins/HomeAutoSort.ini
+```
 
-Use os requisitos indicados pelo Home Auto Sort original. Para esta versão 2.4, o código integra-se com:
+Portanto, as configurações pessoais do usuário não fazem parte do pacote desta tradução.
 
-- SKSE;
-- Address Library / CommonLibSSE-NG runtime support;
-- SKSE Menu Framework;
-- SkyPrompt.
+## ⚠️ Compatibilidade e suporte
 
-## O que testar
+Esta tradução foi desenvolvida especificamente sobre o código-fonte do **Home Auto Sort 2.4**.
 
-Antes de qualquer publicação, valide pelo menos:
+Atualizações futuras do mod original podem alterar a DLL, os textos ou a estrutura interna do projeto. Nesse caso, uma nova adaptação poderá ser necessária.
 
-- Skyrim inicia sem crash antes do menu principal;
-- Home Auto Sort aparece no menu do SKSE Menu Framework;
-- General Settings / Configurações Gerais abre normalmente;
-- Cell 1–5 funciona;
-- busca e seleção de containers funciona;
-- Master Chest / Baú Principal funciona;
-- Stash / Guardar funciona;
-- Resupply / Reabastecer funciona;
-- prompts do SkyPrompt aparecem em PT-BR;
-- salvar, sair do jogo e recarregar mantém as configurações;
-- nenhum item ou preset existente é perdido.
+Para problemas relacionados:
 
-## Dependências de compilação
+- **à tradução PT-BR ou à DLL desta adaptação:** utilize este repositório;
+- **ao funcionamento do Home Auto Sort original:** consulte a página oficial do mod e o autor original.
 
-Não ficam armazenadas neste repositório. O workflow as obtém durante o build:
+Não solicite suporte ao autor original por problemas causados exclusivamente por esta versão modificada.
 
-- CommonLibSSE-NG `v9.1.0`;
-- SimpleIni `v4.25` via XMake;
+## 🔨 Compilação
+
+O projeto pode ser compilado automaticamente pelo GitHub Actions por meio do workflow:
+
+```text
+.github/workflows/build.yml
+```
+
+O workflow utiliza um runner Windows e:
+
+1. instala o XMake;
+2. obtém o CommonLibSSE-NG e as dependências necessárias;
+3. obtém os headers utilizados pelo SKSE Menu Framework e SkyPrompt;
+4. configura o projeto;
+5. compila `HomeAutoSort.dll`;
+6. monta um pacote ZIP na estrutura esperada pelo Mod Organizer 2.
+
+Após uma execução bem-sucedida, o Artifact contém o pacote gerado para instalação.
+
+## 🧩 Dependências de compilação
+
+As dependências de terceiros não precisam ficar armazenadas diretamente neste repositório quando são obtidas automaticamente pelo workflow.
+
+A build utiliza, entre outros componentes:
+
+- CommonLibSSE-NG;
+- SimpleIni;
 - SKSE Menu Framework API;
-- SkyPrompt API.
+- SkyPrompt API;
+- XMake;
+- toolchain MSVC disponibilizada pelo runner Windows do GitHub Actions.
 
-## Créditos
+As versões efetivamente utilizadas pelo build devem ser consultadas no `xmake.lua` e no workflow do GitHub Actions.
 
-- **zfroggyman** — autor original do Home Auto Sort.
-- **QTR Modding / Quantumyilmaz** — APIs do SKSE Menu Framework e SkyPrompt.
-- **CommonLibSSE-NG contributors** — framework para plugins SKSE.
-- **MestreUDK** — tradução PT-BR, adaptação de localização e testes.
+## 📁 Estrutura principal
 
-## Licença
+```text
+.github/
+└── workflows/
+    └── build.yml
 
-O código derivado mantém os arquivos `COPYING.txt` e `EXCEPTIONS.md` fornecidos junto ao código-fonte do Home Auto Sort. Consulte-os antes de redistribuir builds binários ou código modificado.
+include/
+src/
+translations/
+└── HomeAutoSort_Translation.ini
+
+COPYING.txt
+EXCEPTIONS.md
+README.md
+xmake.lua
+```
+
+## 🙏 Créditos
+
+### Home Auto Sort
+
+- **zfroggyman** — criador e autor original do **Home Auto Sort**.
+
+Todo o mérito pelas funcionalidades originais, lógica de autosort, sistema de containers, presets, Stash, Resupply e demais recursos do mod pertence ao autor original.
+
+### APIs e frameworks
+
+- **SkyrimThiago** — SKSE Menu Framework.
+- **Quantumyilmaz** — SkyPrompt.
+- **alandtse e contribuidores do CommonLibSSE-NG** — CommonLibSSE-NG e infraestrutura utilizada por plugins SKSE.
+- Demais autores e contribuidores das bibliotecas utilizadas pelas dependências do projeto.
+
+### Tradução PT-BR
+
+- **MestreUDK** — tradução para português brasileiro, externalização/localização dos textos, adaptação para compilação, GitHub Actions e testes da versão PT-BR.
+
+## 📜 Licença
+
+O **Home Auto Sort** é disponibilizado pelo autor original sob **GNU General Public License v3.0 or later (GPL-3.0-or-later)**, juntamente com exceções de linking aplicáveis ao ecossistema de modding.
+
+Como este projeto é uma obra derivada do código-fonte do Home Auto Sort, o código derivado deste repositório permanece sob **GPL-3.0-or-later**, respeitando os avisos e condições originais.
+
+Consulte:
+
+```text
+COPYING.txt
+EXCEPTIONS.md
+```
+
+Esses arquivos devem ser preservados em redistribuições do código ou de builds derivados quando aplicável.
+
+A presença deste repositório, da tradução ou de uma build modificada **não transfere a autoria do Home Auto Sort**. O autor original permanece devidamente creditado.
+
+## ❤️ Agradecimentos
+
+Agradecimentos especiais ao **zfroggyman** por desenvolver o Home Auto Sort, disponibilizar seu código-fonte e permitir modificações e redistribuições conforme os termos e permissões do projeto.
+
+Esta tradução foi feita de fã para fã, com o objetivo de tornar o mod mais acessível para jogadores brasileiros.
