@@ -24,7 +24,7 @@ Tradução e adaptação de localização para **Home Auto Sort 2.4**, de **zfro
 - **Mod original — Home Auto Sort:** [Nexus Mods](https://www.nexusmods.com/skyrimspecialedition/mods/183379)
 - **Código-fonte desta adaptação:** [HomeAutoSort-PTBR no GitHub](https://github.com/MestreUDK/HomeAutoSort-PTBR)
 
-## 🇧🇷 Sobre esta tradução
+## Sobre esta tradução
 
 O Home Auto Sort possui vários textos de interface diretamente dentro de `HomeAutoSort.dll`, incluindo menus, categorias, tooltips e prompts utilizados pelo SkyPrompt.
 
